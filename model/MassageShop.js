@@ -24,4 +24,4 @@ const MassageShopSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("MassageShopSchema", MassageShopSchema);
+module.exports = mongoose.model("MassageShop", MassageShopSchema);
