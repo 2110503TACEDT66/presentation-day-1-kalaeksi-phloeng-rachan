@@ -10,8 +10,10 @@ const app = express();
 app.use(express.json());
 
 const MassageShop = require("./routes/massageShop");
+const Auth = require("./routes/auth");
 
 app.use("/MassageShops", MassageShop);
+app.use("/auth", Auth);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
