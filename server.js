@@ -13,8 +13,6 @@ const MassageShop = require("./routes/massageShop");
 
 app.use("/MassageShops", MassageShop);
 
-app.use(express.json());
-
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
 	PORT,
