@@ -16,7 +16,7 @@ exports.getMassageShops = async (req, res, next) => {
 		(match) => `$${match}`
 	);
 
-	query = MassageShop.find(JSON.parse(queryString));
+	query = MassageShop.find(JSON.parse(queryString)).populate('reservations');
 
 	if (req.query.select) {
 		const fields = req.query.select.split(",").join(" ");
