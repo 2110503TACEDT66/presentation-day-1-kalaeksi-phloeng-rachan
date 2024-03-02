@@ -11,9 +11,11 @@ app.use(express.json());
 
 const MassageShop = require("./routes/massageShop");
 const reservations = require("./routes/reservations");
+const Auth = require("./routes/auth");
 
 app.use("/MassageShops", MassageShop);
 app.use("/reservations", reservations)
+app.use("/auth", Auth);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
