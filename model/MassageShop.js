@@ -22,6 +22,22 @@ const MassageShopSchema = new mongoose.Schema({
         type: Date,
         require: [true, "Please add a close time"],
     }
+}, {
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+});
+
+MassageShopSchema.pre('deleteOne', { document: true, query: false }, async function(next){
+    console.log(`Reservations being removed from massageShop ${this._id}`);
+    await this.model('Reservation').deleteMany({massageShop: this._id});
+    next();
+});
+
+MassageShopSchema.virtual('reservations', {
+    ref: 'Reservation',
+    localField: '_id',
+    foreignField: 'massageShop',
+    justOne: false
 });
 
 module.exports = mongoose.model("MassageShop", MassageShopSchema);
