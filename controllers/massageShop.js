@@ -1,4 +1,4 @@
-const MassageShop = require("../model/MassageShop");
+const MassageShop = require("../models/MassageShop");
 
 exports.getMassageShops = async (req, res, next) => {
 	let query;
