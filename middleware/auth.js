@@ -24,8 +24,7 @@ exports.protect = async (req,res,next) =>{
         console.log(decoded);
         req.user = await User.findById(decoded.id);
         next();
-    } 
-    catch(err){
+    } catch(err){
         console.log(err.stack);
         return res.status(401).json({success: false, message: 'Not authorize to access this route'});
     }
