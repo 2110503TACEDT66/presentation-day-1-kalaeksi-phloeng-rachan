@@ -1,3 +1,13 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 03:12:00 AM
+ * Everything looks like our lab except "Swagger"
+ * 
+ * >> Unnecessary things
+ * 		in our lab we use require("../controllers/hospitals")
+ * 		Should we use require("../controllers/massageShops") too?
+ * 		(We don't have to. It's unnecessary)
+ */
 const express = require("express");
 const reservations = require("./reservations");
 const {

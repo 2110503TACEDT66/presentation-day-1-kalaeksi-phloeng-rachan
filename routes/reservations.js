@@ -1,6 +1,17 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 03:16:00
+ * All Clear
+ */
 const express = require('express');
 
-const {getReservations, getReservation, addReservation, updateReservation, deleteReservation} = require('../controllers/reservations');
+const {
+    getReservations,
+    getReservation,
+    addReservation,
+    updateReservation,
+    deleteReservation
+} = require('../controllers/reservations');
 
 const router = express.Router({mergeParams:true});
 
