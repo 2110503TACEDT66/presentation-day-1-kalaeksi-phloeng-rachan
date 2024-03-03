@@ -1,3 +1,11 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 03:44:00 AM
+ * All Clear
+ * 
+ * This commit fixed
+ * - turn sentence into more popular one
+ */
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
@@ -7,16 +15,14 @@ const UserSchema = new mongoose.Schema({
         type : String,
         required : [true, 'Please add a name']
     },
-
     tel: {
         type: String,
         required: [true, "Please add a tel"],
-        match: [/^\d+$/, "Tel must only contain digits"],
+        match: [/^\d+$/, "Tel must contain only digits"],
         minlength: [10, "Tel must have 10 digits"],
         maxlength: [10, "Tel must have 10 digits"]
         
     },
-
     email : {
         type : String,
         required : [true, 'Please add an email'],
@@ -45,20 +51,20 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-//Encrypt password using bcyrpt
+// Encrypt password using bcyrpt
 UserSchema.pre('save', async function(next) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-//sign JWT and return
+// Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function(){
     return jwt.sign({id:this._id}, process.env.JWT_SECRET, {
         expiresIn : process.env.JWT_EXPIRE
     });
 }
 
-//match user entered password to hashed password in database
+// Match user entered password to hashed password in database
 UserSchema.methods.matchPassword = async function(enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password);
 }

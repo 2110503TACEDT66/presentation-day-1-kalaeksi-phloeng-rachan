@@ -1,3 +1,8 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 03:23:00 AM
+ * All Clear
+ */
 const mongoose = require("mongoose");
 
 const connectDB = async () =>{
