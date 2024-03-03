@@ -10,9 +10,13 @@ const MassageShopSchema = new mongoose.Schema({
         type: String,
         require: [true, "Please add a address"],
     },
-    telephone: {
+    tel: {
         type: String,
-        require: [true, "Please add a telephone"],
+        required: [true, "Please add a tel"],
+        match: [/^\d+$/, "Tel must only contain digits"],
+        minlength: [10, "Tel must have 10 digits"],
+        maxlength: [10, "Tel must have 10 digits"]
+        
     },
     open: {
         type: Date,

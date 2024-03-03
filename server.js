@@ -47,7 +47,7 @@ app.use(hpp());
 //Enable CORS
 app.use(cors());
 
-app.use("/MassageShops", MassageShop);
+app.use("/massageShops", MassageShop);
 app.use("/reservations", reservations)
 app.use("/auth", Auth);
 
