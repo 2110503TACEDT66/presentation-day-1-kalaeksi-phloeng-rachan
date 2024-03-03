@@ -16,7 +16,7 @@ exports.getMassageShops = async (req, res, next) => {
 		(match) => `$${match}`
 	);
 
-	query = MassageShop.find(JSON.parse(queryString)).populate('reservations');
+	query = MassageShop.find(JSON.parse(queryString)).populate('review').populate('reservations');
 
 	if (req.query.select) {
 		const fields = req.query.select.split(",").join(" ");
@@ -77,6 +77,7 @@ exports.getMassageShop = async (req, res, next) => {
 		return res.status(400).json({ success: false });
 	}
 };
+
 
 exports.createMassageShop = async (req, res, next) => {
 	try {

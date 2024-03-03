@@ -37,11 +37,20 @@ MassageShopSchema.pre('deleteOne', { document: true, query: false }, async funct
     next();
 });
 
+MassageShopSchema.virtual('review', {
+    ref: 'Review',
+    localField: '_id',
+    foreignField: 'massageShop',
+    justOne: false
+});
+
 MassageShopSchema.virtual('reservations', {
     ref: 'Reservation',
     localField: '_id',
     foreignField: 'massageShop',
     justOne: false
 });
+
+
 
 module.exports = mongoose.model("MassageShop", MassageShopSchema);
