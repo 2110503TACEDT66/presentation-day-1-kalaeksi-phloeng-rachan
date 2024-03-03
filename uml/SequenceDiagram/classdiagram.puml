@@ -18,11 +18,9 @@ package "Massage System"{
     class "<<Representation>>\nMassage" as RepresentationMassage {
         -name
         -address
-        -district
-        -province
-        -postalcode
+        -open
         -telephone
-        -region
+        -close
     }
 
    '///////////////////////////////////////////////////////////////
@@ -38,9 +36,9 @@ package "Massage System"{
     }
 
     class "<<Representation>>\nReservation" as RepresentationReservation {
-        -apptDate
+        -reserveDate
         -user
-        -massage
+        -massageShop
         -createdAt
     }
     
@@ -54,6 +52,7 @@ package "Massage System"{
 
     class "<<Representation>>\nUser" as RepresentationUser {
         -name
+        -telephone
         -email
         -role
         -password
