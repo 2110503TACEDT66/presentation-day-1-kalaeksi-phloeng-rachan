@@ -1,3 +1,4 @@
+const { text } = require('express');
 const mongoose = require('mongoose');
 
 const ReviewSchema=new mongoose.Schema({
@@ -6,9 +7,9 @@ const ReviewSchema=new mongoose.Schema({
         min: 0,
         max: 5,
     },
-    reviewDate: {
-        type: Date,
-        required:true
+    comment: {
+        type: String,
+        maxlength: 50,
     },
     user:{
         type:mongoose.Schema.ObjectId,
