@@ -1,0 +1,33 @@
+@startuml 
+
+left to right direction
+
+rectangle "Massage Reservation System" as HBSys{
+    usecase "Register" as register
+    usecase "Login" as logIn
+    usecase "Logout" as logOut
+    usecase "View my\nMassageReservation" as viewmyMassageReservation
+    usecase "Edit my \nMassageReservation" as editmyMassageReservation
+    usecase "Delete my \nMassageReservation" as deletemyMassageReservation
+    usecase "View any\nMassageReservation" as viewanyMassageReservation
+    usecase "Delete any\nMassageReservation" as deleteanyMassageReservation
+    usecase "Edit any\nMassageReservation" as editanyMassageReservation
+}
+user -- register
+user -- logOut
+user -- viewmyMassageReservation
+user -- deletemyMassageReservation
+user -- editmyMassageReservation
+
+register -- admin
+logIn -- admin
+logOut -- admin
+viewmyMassageReservation -- admin
+viewanyMassageReservation -- admin
+editanyMassageReservation -- admin
+deleteanyMassageReservation -- admin
+deletemyMassageReservation -- admin
+editmyMassageReservation -- admin
+
+
+@enduml
