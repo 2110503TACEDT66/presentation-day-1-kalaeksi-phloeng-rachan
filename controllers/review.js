@@ -6,25 +6,34 @@ const MassageShop = require('../models/MassageShop');
 //@access  Public
 exports.getReviews=async (req,res,next)=>{
     let query;
-    //General users can see only their reviews!
-    if (req.user.role !== 'admin') {
-        query=Review.find({user:req.user.id}).populate({
-			path: 'massageShop',
-			select: 'name address telephone'
-		});
-    } else {//If you are an admin, you can see all!
-        if (req.params.massageShopId){
-            console.log(req.params.massageShopId);
-            query = Review.find({massageShop: req.params.massageShopId }).populate({
-				path: 'massageShop',
-				select: 'name address telephone'
-			});
-        } else query = Review.find().populate({
-			path: 'massageShop',
-			select: 'name address telephone'
-		});
+    if (req.params.massageShopId){  
+        console.log(req.params.massageShopId);
+        query = Review.find({massageShop: req.params.massageShopId }).populate({
+            path: 'massageShop',
+            select: 'name address telephone'
+        }).populate({
+            path: 'user',
+            select: 'name'
+        });
+    } else if(req.user.role !== 'admin'){
+        query = Review.find({user: req.user.id}).populate({
+            path: 'massageShop',
+            select: 'name address telephone'
+        }).populate({
+            path: 'user',
+            select: 'name'
+        });
+    } else {
+        query = Review.find().populate({
+            path: 'massageShop',
+            select: 'name address telephone'
+        }).populate({
+            path: 'user',
+            select: 'name'
+        });
     }
-    
+
+
     try {
         const reviews= await query;
         res.status(200).json({
