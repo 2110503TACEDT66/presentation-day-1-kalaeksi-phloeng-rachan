@@ -14,11 +14,10 @@ participant "<<model>>\n:MassageShop" as modelMassageShop
 database "<<MongoDB>>\n:massageShop" as MassageShopsDatabase
 
 
-client->server ++:req.put('/massageShop/:id')
-server->routerMassageShops ++:app.use('/massageShop',massageShop)
-routerMassageShops -> controllersMassageShops ++:deleteMassageShop()
-controllersMassageShops->modelMassageShop ++:findByIdAndDelete(req.params.id)
-modelMassageShop ->MassageShopsDatabase ++: MassageShopSchema
+client->server ++:req.delete('/massageShops/:id')
+server->routerMassageShops ++:app.use('/massageShops',massageShop)
+routerMassageShops -> controllersMassageShops ++:protect, authorize("admin"), deleteMassageShop()
+controllersMassageShops->modelMassageShop ++:massageShop.deleteOne()
 MassageShopsDatabase --> modelMassageShop --: massageShop
 controllersMassageShops <-- modelMassageShop --:massageShop
 controllersMassageShops->client --:response

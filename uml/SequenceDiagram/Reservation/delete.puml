@@ -12,9 +12,9 @@ participant "<<model>>\n:Reservation" as modelReservation
 database "<<MongoDB>>\n:reservations" as ReservationsDatabase
 
 client->server ++:req.delete('/reservations/:id')
-server->routerReservations ++:app.use('/reservations/:id',reservations)
-routerReservations -> controllersReservations ++:deleteReservation(id)
-controllersReservations->modelReservation ++:deleteReservationById(id)
+server->routerReservations ++:app.use('/reservations/',reservations)
+routerReservations -> controllersReservations ++:protect, authorize('admin', 'user'), deleteReservation(id)
+controllersReservations->modelReservation ++:reservation.deleteOne()
 modelReservation ->ReservationsDatabase ++: ReservationSchema
 ReservationsDatabase --> modelReservation --: reservation
 controllersReservations <-- modelReservation --:reservation

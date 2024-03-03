@@ -12,9 +12,9 @@ participant "<<model>>\n:Reservation" as modelReservation
 database "<<MongoDB>>\n:reservations" as ReservationsDatabase
 
 client->server ++:req.get('/reservations/:id')
-server->routerReservations ++:app.use('/reservations/:id',reservations)
-routerReservations -> controllersReservations ++:getReservation(id)
-controllersReservations->modelReservation ++:findReservationById(req.id, req.body)
+server->routerReservations ++:app.use('/reservations/',reservations)
+routerReservations -> controllersReservations ++:protect, getReservation(id)
+controllersReservations->modelReservation ++:findById(req.id)
 modelReservation ->ReservationsDatabase ++: ReservationSchema
 ReservationsDatabase --> modelReservation --: reservation
 controllersReservations <-- modelReservation --:reservation
