@@ -1,0 +1,23 @@
+@startuml Manage Auth (GET Me)
+
+header Massage Reservation System
+footer Page %page% of %lastpage%
+title "Manage Auth (GET Me)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:auth" as routerAuth
+participant "<<controllers>>\n:auth" as controllersAuth
+participant "<<model>>\n:User" as modelUser
+database "<<MongoDB>>\n:users" as UsersDatabase
+
+client->server ++:req.get('/auth/me')
+server->routerAuth ++:app.use('/auth/me',auth)
+routerAuth -> controllersAuth ++:getMe()
+controllersAuth->modelUser ++:findUserById(req.id, req.body)
+modelUser ->UsersDatabase ++: UserSchema
+UsersDatabase --> modelUser --: user
+controllersAuth <-- modelUser --:user
+controllersAuth->client --:response
+
+@enduml
