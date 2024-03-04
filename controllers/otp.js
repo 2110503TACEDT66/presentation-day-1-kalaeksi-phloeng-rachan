@@ -10,8 +10,11 @@ dotenv.config({ path: "../config/config.env" });
 const accountSid = process.env.TWILIO_SID;
 const authToken = process.env.TWILIO_TOKEN;
 
-const twilioClient = new twilio(accountSid, authToken);
+const twilioClient = new twilio(accountSid, authToken, {});
 
+//@desc		Send otp password
+//@route	/otp/sendOtp
+//@access	Public
 exports.sendOtp = async (phoneNumber) => {
 	try {
 		const otp = otpGenerator.generate(6, {
@@ -21,10 +24,11 @@ exports.sendOtp = async (phoneNumber) => {
 		});
 
 		await Otp.findOneAndUpdate(
-			{ phoneNumber: phoneNumber },
-			{ otp: otp },
-			{ upsert: true, new: true, setDefaultOnInsert: true }
+			{ phoneNumber: phoneNumber }, // filter
+			{ otp: otp, createdAt: Date.now}, // update
+			{ upsert: true, new: true, setDefaultOnInsert: true } // option
 		);
+
 		await twilioClient.messages.create({
 			body: `Your OTP is ${otp}`,
 			to: "+66918683540",
@@ -35,19 +39,31 @@ exports.sendOtp = async (phoneNumber) => {
 	}
 };
 
+//@desc		Verify otp password
+//@route	/otp/verify
+//@access	Private
 exports.verify = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
 		const otp = await OtpData.findOne({
 			phoneNumber: user.tel,
-			otp: req.body.otp,
+			otp: req.body.otp
 		});
+		
         if(!otp){
             return res.status(400).json({
                 success: false,
                 message: "Wrong Otp"
             })
         }
+		
+		// Check createdAt time
+		if (otp.createdAt < new Date(new Date().getTime() - 5 * 60 * 1000)) {
+			return res.status(400).json({
+				success: false,
+				messaeg: "Otp timed out"
+			})
+		}
 
         await user.updateOne({role: 'user'});
 		return res.status(200).json({

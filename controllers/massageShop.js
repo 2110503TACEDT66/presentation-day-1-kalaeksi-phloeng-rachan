@@ -18,8 +18,7 @@ exports.getMassageShops = async (req, res, next) => {
 
 		// Copy req.query
 		const reqQuery = { ...req.query };
-    
-	  query = MassageShop.find(JSON.parse(queryString)).populate('review').populate('reservations');
+
 		// Fields to exclude
 		const removeField = ["select", "sort", "page", "limit"];
 
@@ -38,7 +37,7 @@ exports.getMassageShops = async (req, res, next) => {
 		);
 
 		// Finding resource
-		query = MassageShop.find(JSON.parse(queryString)).populate('reservations');
+		query = MassageShop.find(JSON.parse(queryString)).populate('review').populate('reservations');
 
 		// Select Fields
 		if (req.query.select) {
