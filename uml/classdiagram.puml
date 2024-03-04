@@ -1,5 +1,5 @@
 @startuml
-left to right direction
+top to bottom direction
 package "Massage System"{
     class "<<Application>>\nMassageReservation" as MassageReservation{}
 

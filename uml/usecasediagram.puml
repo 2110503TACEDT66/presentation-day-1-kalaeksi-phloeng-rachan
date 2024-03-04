@@ -6,6 +6,7 @@ rectangle "Massage Reservation System" as HBSys{
     usecase "Register" as register
     usecase "Login" as logIn
     usecase "Logout" as logOut
+    usecase "View\nMassageShop" as viewMassageShop
     usecase "View my\nMassageReservation" as viewmyMassageReservation
     usecase "Edit my \nMassageReservation" as editmyMassageReservation
     usecase "Delete my \nMassageReservation" as deletemyMassageReservation
@@ -16,6 +17,8 @@ rectangle "Massage Reservation System" as HBSys{
 user -- register
 user -- logIn
 user -- logOut
+user -- logIn
+user -- viewMassageShop
 user -- viewmyMassageReservation
 user -- deletemyMassageReservation
 user -- editmyMassageReservation
@@ -23,6 +26,7 @@ user -- editmyMassageReservation
 register -- admin
 logIn -- admin
 logOut -- admin
+viewMassageShop -- admin
 viewmyMassageReservation -- admin
 viewanyMassageReservation -- admin
 editanyMassageReservation -- admin

@@ -1,27 +1,38 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 04:40:00 AM
+ * All Clear
+ * 
+ * getReservation might be security bug (the bug is from our lab.)
+ * 
+ * This commit fixed
+ * - change telephone to tel
+ * - change access and route comment
+ */
 const Reservation = require('../models/Reservation');
 const MassageShop = require('../models/MassageShop');
 
-//@desc    Get all reservations
+//@desc    Get all reservations (General users can see only their reservations!)
 //@route   GET /reservations
-//@access  Public
+//@access  Private [user, admin]
 exports.getReservations=async (req,res,next)=>{
     let query;
-    //General users can see only their reservations!
+    // General users can see only their reservations!
     if (req.user.role !== 'admin') {
         query=Reservation.find({user:req.user.id}).populate({
 			path: 'massageShop',
-			select: 'name address telephone'
+			select: 'name address tel'
 		});
-    } else {//If you are an admin, you can see all!
+    } else { // If you are an admin, you can see all!
         if (req.params.massageShopId){
             console.log(req.params.massageShopId);
             query = Reservation.find({massageShop: req.params.massageShopId }).populate({
 				path: 'massageShop',
-				select: 'name address telephone'
+				select: 'name address tel'
 			});
         } else query = Reservation.find().populate({
 			path: 'massageShop',
-			select: 'name address telephone'
+			select: 'name address tel'
 		});
     }
     
@@ -34,18 +45,19 @@ exports.getReservations=async (req,res,next)=>{
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false,message:"Cannot find Reservation"});
+        return res.status(500).json({success: false, message: "Cannot find Reservation"});
     }
 };
 
 //@desc    Get single reservation
 //@route   GET /reservations/:id
-//@access  Public
+//@access  Private [user, admin]
 exports.getReservation = async (req, res, next) => {
     try {
+        // @LapisBerry: Other users can see other's reservation by knowing their reservationID?
         const reservation= await Reservation.findById(req.params.id).populate({
             path: 'massageShop',
-            select: 'name description telephone'
+            select: 'name description tel'
         });
 
         if(!reservation) {
@@ -58,13 +70,13 @@ exports.getReservation = async (req, res, next) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false,message:"Cannot find Reservation"});
+        return res.status(500).json({success:false, message: "Cannot find Reservation"});
     }
 };
 
 //desc    Add reservation
-//route   POST /massageShops/:massageShopId/reservation
-//access  Private
+//route   POST /massageShops
+//access  Private [user, admin]
 exports.addReservation=async (req,res,next)=>{
     try {
         req.body.massageShop=req.params.massageShopId;
@@ -75,7 +87,7 @@ exports.addReservation=async (req,res,next)=>{
             return res.status(404).json({success:false,message:`No massageShop with the id of ${req.params.massageShopId}`});
         }
         
-		// add user Id to req.body
+		// Add user Id to req.body
 		req.body.user = req.user.id;
 
 		// Check for existed reservation
@@ -94,13 +106,13 @@ exports.addReservation=async (req,res,next)=>{
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success:false,message:"Cannot create Reservation"});
+        return res.status(500).json({success:false, message: "Cannot create Reservation"});
     }
 }
 
 //@desc    Update reservation
 //@route   PUT /reservations/:id
-//@access  Private
+//@access  Private [user, admin]
 exports.updateReservation = async (req, res, next) => {
     try {
         let reservation = await Reservation.findById(req.params.id);
@@ -132,7 +144,7 @@ exports.updateReservation = async (req, res, next) => {
 
 //@desc		Delete reservation
 //@route	DELETE /reservations/:id
-//@access	Private
+//@access	Private [user, admin]
 exports.deleteReservation=async (req,res,next)=>{
     try {
         const reservation= await Reservation.findById(req.params.id);

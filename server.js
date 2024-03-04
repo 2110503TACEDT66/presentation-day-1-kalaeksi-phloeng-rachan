@@ -1,3 +1,8 @@
+/**
+ * @LapisBerry
+ * 2024 MAR 3 02:01:00 AM
+ * Everything looks like our lab except "Swagger"
+ */
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db.js");
@@ -9,45 +14,50 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 
+// Load env vars
 dotenv.config({path: "./config/config.env"});
 
+// Connect to database
 connectDB();
 
 const app = express();
 
+// Body parser
 app.use(express.json());
 
-//route file
+// Route file
 const MassageShop = require("./routes/massageShop");
 const reservations = require("./routes/reservations");
 const Auth = require("./routes/auth");
 const Review = require("./routes/reviews");
 const Otp = require("./routes/otp")
-//cookie parser
+
+// Cookie parser
 app.use(cookieParser());
 
-//sanitize data
+// Sanitize data
 app.use(mongoSanitize());
 
-//set security headers
+// Set security headers
 app.use(helmet());
 
-//prevent XSS attacks
+// Prevent XSS attacks
 app.use(xss());
 
-//rate limiting
+// Rate limiting
 const limiter = rateLimit({
     windowsMs : 10*60*1000, //10 mins
     max : 500
 });
 app.use(limiter);
 
-//prevent http param pollutions
+// Prevent http param pollutions
 app.use(hpp());
 
-//Enable CORS
+// Enable CORS
 app.use(cors());
 
+// Mount routers
 app.use("/massageShops", MassageShop);
 app.use("/reservations", reservations)
 app.use("/auth", Auth);
@@ -56,8 +66,7 @@ app.use("/otp", Otp);
 
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(
-	PORT,console.log("Server running in ",process.env.NODE_ENV," mode on port ",PORT));
+const server = app.listen(PORT, console.log("Server running in ", process.env.NODE_ENV, " mode on port ", PORT));
 
 process.on("unhandledRejection", (err, promise) => {
 	console.log(err.message);
