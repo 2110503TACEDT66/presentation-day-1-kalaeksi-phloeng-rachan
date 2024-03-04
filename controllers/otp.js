@@ -60,7 +60,7 @@ exports.verify = async (req, res, next) => {
         }
 		
 		// Check createdAt time
-		if (otp.createdAt < new Date(new Date().getTime() - 5 * 60 * 1)) {
+		if (otp.createdAt < new Date(new Date().getTime() - 5 * 60 * 1000)) {
 			return res.status(400).json({
 				success: false,
 				messaeg: "Otp timed out"
