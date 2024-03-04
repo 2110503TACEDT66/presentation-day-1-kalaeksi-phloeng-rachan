@@ -26,7 +26,7 @@ exports.sendOtp = async (phoneNumber) => {
 		// สร้าง OTP ในฐานข้อมูล
 		await Otp.findOneAndUpdate(
 			{ phoneNumber: phoneNumber }, // filter
-			{ otp: otp, createdAt: Date.now}, // update
+			{ otp: otp, createdAt: Date.now()}, // update
 			{ upsert: true, new: true, setDefaultOnInsert: true } // option
 		);
 
@@ -60,7 +60,7 @@ exports.verify = async (req, res, next) => {
         }
 		
 		// Check createdAt time
-		if (otp.createdAt < new Date(new Date().getTime() - 5 * 60 * 1000)) {
+		if (otp.createdAt < new Date(new Date().getTime() - 5 * 60 * 1)) {
 			return res.status(400).json({
 				success: false,
 				messaeg: "Otp timed out"
