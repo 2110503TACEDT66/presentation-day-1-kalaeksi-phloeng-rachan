@@ -18,7 +18,6 @@ exports.getMassageShops = async (req, res, next) => {
 
 		// Copy req.query
 		const reqQuery = { ...req.query };
-
 		// Fields to exclude
 		const removeField = ["select", "sort", "page", "limit"];
 

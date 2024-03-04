@@ -19,10 +19,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please add a tel"],
         unique : true,
-        match: [/^\d+$/, "Tel must contain only digits"],
-        minlength: [10, "Tel must have 10 digits"],
-        maxlength: [10, "Tel must have 10 digits"]
-        
     },
     email : {
         type : String,
@@ -35,7 +31,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type : String,
-        enum : ['user', 'admin'],
+        enum : ['user', 'admin', 'non verify user'],
         default : 'non verify user'
     },
     password : {

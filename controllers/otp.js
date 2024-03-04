@@ -18,7 +18,6 @@ const twilioClient = new twilio(accountSid, authToken, {});
 //@access	Public
 exports.sendOtp = async (phoneNumber) => {
 	try {
-		const { phoneNumber } = req.body;
 		const otp = otpGenerator.generate(6, {
 			upperCaseAlphabets: false,
 			specialChars: false,
@@ -33,19 +32,12 @@ exports.sendOtp = async (phoneNumber) => {
 
 		await twilioClient.messages.create({
 			body: `Your OTP is ${otp}`,
-			to: phoneNumber,
-			from: process.env.TWILIO_PHONE_NUMBER,
+			to: "+66918683540",
+			from: "+17572510266",
 		});
-		res.status(200).json({
-			success: true,
-			message: 'OTP has been sent to your phone number'
-		});
+		
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({
-			success: false,
-			error: 'Server Error'
-		});
 	}
 };
 
@@ -55,7 +47,7 @@ exports.sendOtp = async (phoneNumber) => {
 exports.verify = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
-		const otp = await Otp.findOne({
+		const otp = await OtpData.findOne({
 			phoneNumber: user.tel,
 			otp: req.body.otp
 		});

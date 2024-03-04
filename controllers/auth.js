@@ -11,8 +11,9 @@ const {sendOtp} = require('./otp');
 //@access  Public
 exports.register = async (req,res,next) => {
     try{
-        const {name,tel, email, password, role} = req.body;
-
+        let {name,tel, email, password, role} = req.body;
+        
+        tel = "+66" + tel.substring(1);
         // Create User
         const user = await User.create({
             name,
@@ -20,7 +21,6 @@ exports.register = async (req,res,next) => {
             email,
             password,
             role,
-            verify: false,
         });
         sendOtp(tel);
         // Create token
