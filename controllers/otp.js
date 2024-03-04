@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const User = require("../models/User");
 const OtpData = require("../models/Otp");
 
+
 dotenv.config({ path: "../config/config.env" });
 
 const accountSid = process.env.TWILIO_SID;
@@ -17,12 +18,13 @@ const twilioClient = new twilio(accountSid, authToken, {});
 //@access	Public
 exports.sendOtp = async (phoneNumber) => {
 	try {
+		const { phoneNumber } = req.body;
 		const otp = otpGenerator.generate(6, {
 			upperCaseAlphabets: false,
 			specialChars: false,
 			lowerCaseAlphabets: false,
 		});
-
+		// สร้าง OTP ในฐานข้อมูล
 		await Otp.findOneAndUpdate(
 			{ phoneNumber: phoneNumber }, // filter
 			{ otp: otp, createdAt: Date.now}, // update
@@ -31,11 +33,19 @@ exports.sendOtp = async (phoneNumber) => {
 
 		await twilioClient.messages.create({
 			body: `Your OTP is ${otp}`,
-			to: "+66918683540",
-			from: "+17572510266",
+			to: phoneNumber,
+			from: process.env.TWILIO_PHONE_NUMBER,
+		});
+		res.status(200).json({
+			success: true,
+			message: 'OTP has been sent to your phone number'
 		});
 	} catch (err) {
-		console.log(err);
+		console.error(err);
+		res.status(500).json({
+			success: false,
+			error: 'Server Error'
+		});
 	}
 };
 
@@ -45,7 +55,7 @@ exports.sendOtp = async (phoneNumber) => {
 exports.verify = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
-		const otp = await OtpData.findOne({
+		const otp = await Otp.findOne({
 			phoneNumber: user.tel,
 			otp: req.body.otp
 		});
@@ -71,6 +81,10 @@ exports.verify = async (req, res, next) => {
 			// data: user
 		});
 	} catch (err) {
-		return res.status(400);
+		console.error(err);
+		return res.status(500).json({
+			success: false,
+			error: 'Server Error'
+		});
 	}
 };
