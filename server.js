@@ -29,6 +29,8 @@ app.use(express.json());
 const MassageShop = require("./routes/massageShop");
 const reservations = require("./routes/reservations");
 const Auth = require("./routes/auth");
+const Review = require("./routes/reviews");
+const Otp = require("./routes/otp")
 
 // Cookie parser
 app.use(cookieParser());
@@ -59,6 +61,9 @@ app.use(cors());
 app.use("/massageShops", MassageShop);
 app.use("/reservations", reservations)
 app.use("/auth", Auth);
+app.use("/review", Review);
+app.use("/otp", Otp);
+
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log("Server running in ", process.env.NODE_ENV, " mode on port ", PORT));

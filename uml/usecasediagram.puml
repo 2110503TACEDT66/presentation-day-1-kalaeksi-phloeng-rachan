@@ -15,6 +15,7 @@ rectangle "Massage Reservation System" as HBSys{
     usecase "Edit any\nMassageReservation" as editanyMassageReservation
 }
 user -- register
+user -- logIn
 user -- logOut
 user -- logIn
 user -- viewMassageShop

@@ -48,6 +48,13 @@ MassageShopSchema.pre('deleteOne', { document: true, query: false }, async funct
     next();
 });
 
+MassageShopSchema.virtual('review', {
+    ref: 'Review',
+    localField: '_id',
+    foreignField: 'massageShop',
+    justOne: false
+});
+
 // Reverse populate with virtuals
 MassageShopSchema.virtual('reservations', {
     ref: 'Reservation',
@@ -55,5 +62,7 @@ MassageShopSchema.virtual('reservations', {
     foreignField: 'massageShop',
     justOne: false
 });
+
+
 
 module.exports = mongoose.model("MassageShop", MassageShopSchema);

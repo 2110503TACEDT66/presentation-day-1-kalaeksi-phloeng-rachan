@@ -4,6 +4,7 @@
  * All Clear
  */
 const User = require('../models/User');
+const {sendOtp} = require('./otp');
 
 //@desc    Register user
 //@route   POST /auth/register
@@ -19,7 +20,9 @@ exports.register = async (req,res,next) => {
             email,
             password,
             role,
+            verify: false,
         });
+        sendOtp(tel);
         // Create token
         sendTokenResponse(user,200,res);
     } catch(err){
