@@ -32,8 +32,8 @@ exports.sendOtp = async (phoneNumber) => {
 
 		await twilioClient.messages.create({
 			body: `Your OTP is ${otp}`,
-			to: "+66918683540",
-			from: "+17572510266",
+			to: phoneNumber,
+			from: process.env.TWILIO_PHONE_NUMBER,
 		});
 		
 	} catch (err) {
