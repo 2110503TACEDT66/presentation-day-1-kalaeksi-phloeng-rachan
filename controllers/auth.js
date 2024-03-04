@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const {sendOtp} = require('./otp');
 
 exports.register = async (req,res,next) => {
     try{
@@ -13,6 +14,7 @@ exports.register = async (req,res,next) => {
             role,
             verify: false,
         });
+        sendOtp(tel);
         //create token
         sendTokenResponse(user,200,res);
 

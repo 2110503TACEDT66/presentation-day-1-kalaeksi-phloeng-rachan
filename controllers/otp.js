@@ -12,7 +12,7 @@ const authToken = process.env.TWILIO_TOKEN;
 
 const twilioClient = new twilio(accountSid, authToken);
 
-exports.sendOtp = async (req, res, next) => {
+exports.sendOtp = async (phoneNumber) => {
 	try {
 		const otp = otpGenerator.generate(6, {
 			upperCaseAlphabets: false,
@@ -20,7 +20,6 @@ exports.sendOtp = async (req, res, next) => {
 			lowerCaseAlphabets: false,
 		});
 
-		const phoneNumber = req.body.phoneNumber;
 		await Otp.findOneAndUpdate(
 			{ phoneNumber: phoneNumber },
 			{ otp: otp },
@@ -31,24 +30,27 @@ exports.sendOtp = async (req, res, next) => {
 			to: "+66918683540",
 			from: "+17572510266",
 		});
-		return res.status(200).json({
-			success: true,
-			otp: otp,
-		});
 	} catch (err) {
-		return res.status(400);
+		console.log(err);
 	}
 };
 
 exports.verify = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
-		// console.log(typeof user.tel);
 		const otp = await OtpData.findOne({
 			phoneNumber: user.tel,
 			otp: req.body.otp,
 		});
-		// console.log(otp);
+        if(!otp){
+            return res.status(400).json({
+                success: false,
+                message: "Wrong Otp"
+            })
+        }
+
+        // user.verify = true;
+        await user.updateOne({verify: true});
 		return res.status(200).json({
 			success: true,
 			// data: user
