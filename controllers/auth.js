@@ -11,6 +11,7 @@ exports.register = async (req,res,next) => {
             email,
             password,
             role,
+            verify: false,
         });
         //create token
         sendTokenResponse(user,200,res);
