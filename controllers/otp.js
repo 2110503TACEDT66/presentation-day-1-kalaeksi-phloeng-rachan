@@ -49,8 +49,7 @@ exports.verify = async (req, res, next) => {
             })
         }
 
-        // user.verify = true;
-        await user.updateOne({verify: true});
+        await user.updateOne({role: 'user'});
 		return res.status(200).json({
 			success: true,
 			// data: user

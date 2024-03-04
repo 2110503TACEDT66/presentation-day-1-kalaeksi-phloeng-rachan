@@ -38,10 +38,6 @@ const UserSchema = new mongoose.Schema({
         minlength : 6,
         select : false
     },
-    verify: {
-        type: Boolean,
-        default: false,
-    },
     resetPasswordToken : String,
     resetPasswordExpire : Date,
     createdAt : {
