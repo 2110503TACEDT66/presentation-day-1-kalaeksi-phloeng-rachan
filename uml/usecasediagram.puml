@@ -16,6 +16,7 @@ rectangle "Massage Reservation System" as HBSys{
 }
 user -- register
 user -- logOut
+user -- logIn
 user -- viewMassageShop
 user -- viewmyMassageReservation
 user -- deletemyMassageReservation
