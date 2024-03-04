@@ -58,11 +58,11 @@ app.use(hpp());
 app.use(cors());
 
 // Mount routers
-app.use("/massageShops", MassageShop);
-app.use("/reservations", reservations)
-app.use("/auth", Auth);
-app.use("/review", Review);
-app.use("/otp", Otp);
+app.use("/api/massageShops", MassageShop);
+app.use("/api/reservations", reservations)
+app.use("/api/auth", Auth);
+app.use("/api/review", Review);
+app.use("/api/otp", Otp);
 
 
 const PORT = process.env.PORT || 5000;
