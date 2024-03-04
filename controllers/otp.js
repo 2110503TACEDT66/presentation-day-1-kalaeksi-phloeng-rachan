@@ -13,16 +13,15 @@ const authToken = process.env.TWILIO_TOKEN;
 
 const twilioClient = new twilio(accountSid, authToken);
 
-exports.sendOtp = async (req, res, next) => {
+exports.sendOtp = async (phoneNumber) => {
 	try {
-		const { phoneNumber } = req.body;
 		const otp = otpGenerator.generate(6, {
 			upperCaseAlphabets: false,
 			specialChars: false,
 			lowerCaseAlphabets: false,
 		});
 		// สร้าง OTP ในฐานข้อมูล
-		await Otp.findOneAndUpdate(
+		await OtpData.findOneAndUpdate(
 			{ phoneNumber: phoneNumber },
 			{ otp: otp },
 			{ upsert: true, new: true, setDefaultOnInsert: true, expireAfterSeconds: 300 } // ระยะเวลาหมดอายุของ OTP 5 นาที (300 วินาที)
@@ -30,29 +29,23 @@ exports.sendOtp = async (req, res, next) => {
 		// ส่ง OTP ผ่าน Twilio
 		await twilioClient.messages.create({
 			body: `Your OTP is ${otp}`,
-			to: phoneNumber,
-			from: process.env.TWILIO_PHONE_NUMBER,
+			to: "+66918683540",
+			from: "+17572510266",
 		});
-		res.status(200).json({
-			success: true,
-			message: 'OTP has been sent to your phone number'
-		});
+		
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({
-			success: false,
-			error: 'Server Error'
-		});
 	}
 };
 
 exports.verify = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
-		const otp = await Otp.findOne({
+		const otp = await OtpData.findOne({
 			phoneNumber: user.tel,
 			otp: req.body.otp,
 		});
+		console.log(otp);
         if (!otp) {
             return res.status(400).json({
                 success: false,
