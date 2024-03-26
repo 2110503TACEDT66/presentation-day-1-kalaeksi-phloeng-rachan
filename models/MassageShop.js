@@ -35,6 +35,9 @@ const MassageShopSchema = new mongoose.Schema({
     close: {
         type: Date,
         require: [true, "Please add a closing time"],
+    },
+    picture: {
+        type: String,
     }
 }, {
     toJSON: {virtuals: true},

@@ -13,7 +13,7 @@ exports.register = async (req,res,next) => {
     try{
         let {name,tel, email, password, role} = req.body;
         
-        tel = "+66" + tel.substring(1);
+        // tel = "+66" + tel.substring(1);
         // Create User
         const user = await User.create({
             name,
@@ -22,7 +22,7 @@ exports.register = async (req,res,next) => {
             password,
             role,
         });
-        sendOtp(tel);
+        // sendOtp(tel);
         // Create token
         sendTokenResponse(user,200,res);
     } catch(err){
