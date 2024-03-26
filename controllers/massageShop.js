@@ -79,7 +79,7 @@ exports.getMassageShops = async (req, res, next) => {
 		return res.status(200).json({
 				success: true,
 				count: massageShop.length,
-				pagination,
+				// pagination,
 				data: massageShop,
 			});
 	} catch (err) {
