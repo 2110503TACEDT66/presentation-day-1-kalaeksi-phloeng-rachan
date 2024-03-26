@@ -25,7 +25,7 @@ exports.getReservations=async (req,res,next)=>{
 		});
     } else { // If you are an admin, you can see all!
         if (req.params.massageShopId){
-            console.log(req.params.massageShopId);
+            // console.log(req.params.massageShopId);
             query = Reservation.find({massageShop: req.params.massageShopId }).populate({
 				path: 'massageShop',
 				select: 'name address tel'
@@ -88,7 +88,9 @@ exports.addReservation=async (req,res,next)=>{
         }
         
 		// Add user Id to req.body
-		req.body.user = req.user.id;
+		// const {name, email, phoneNumber} = req.body;
+        // console.log(name, email, phoneNumber);
+        // return;
 
 		// Check for existed reservation
 		const existedReservations = await Reservation.find({user:req.user.id});
