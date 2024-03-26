@@ -9,7 +9,7 @@ const ReviewSchema=new mongoose.Schema({
     },
     comment: {
         type: String,
-        maxlength: 50,
+        maxlength: 100,
     },
     user:{
         type:mongoose.Schema.ObjectId,
